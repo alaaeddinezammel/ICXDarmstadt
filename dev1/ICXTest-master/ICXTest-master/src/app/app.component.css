@@ -1,0 +1,88 @@
+.text-ellipsis {
+    text-overflow: ellipsis;
+    font-size: 15px;
+}
+
+.navColor {
+	border-color: red !important;
+}
+img {
+ width:250px;
+  height:350px;
+  display:block;
+
+}
+.card .card-title {
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.text-ellipsis:hover{
+	cursor:pointer;
+}
+.text-infos{
+	font-size:12px;
+}
+.under-cat{
+	padding: 10px 15px !important;
+	color: white;
+}
+.under-cat:hover{
+	cursor: pointer;
+	background-color: rgb(43, 62, 80);
+}
+.panel-heading{
+	font-size:18px;
+}
+.active{
+	background-color: rgb(43, 62, 80) !important;
+}
+.nav-stacked{
+	padding-bottom: 10px;
+}
+.notavailable{
+    margin-top: 10px;
+    background-color: rgb(43, 62, 80);
+    padding: 10px;
+}
+.text-row{
+	width: 100%;
+	height: 50px;
+}
+.text-btn{
+
+	float: right;
+	
+}
+.orange-text{
+	position: absolute;
+	margin-top: 0px !important;
+
+}
+
+
+.navbar-default {
+  background-color:teal;
+  background-image: none;
+  background-repeat: no-repeat;
+ }
+
+ .navbar-default {
+    background-color: #009999;
+    border-color: #009999;
+}
+.btn-color{
+	background-color: rgb(255,64,129) !important;
+}
+
+.imgDIV{
+	display:block;
+	float:left;
+	width:200px;
+	
+}

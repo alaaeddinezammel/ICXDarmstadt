@@ -1,0 +1,402 @@
+<nav class="navbar navbar-fixed-top navbar-inverse  navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+      aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" routerLink="/">Movies Test ICX</a>
+  </div>
+  <div id="navbar" class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+
+    </ul>
+  </div>
+</div>
+</nav>
+
+<div class="container-fluid app-container">
+  <div class="row">
+
+    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".movies-cat">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse movies-cat">
+          <div class="panel-heading">Sort By</div>
+          <ul class="nav nav-stacked">
+            <li><a class="under-cat" [ngClass]="{active: sort == '-duration'}" (click)="sortBy('-duration')">Duration</a></li>
+            <li><a class="under-cat" [ngClass]="{active: sort == '-rate'}" (click)="sortBy('-rate')">Rating</a></li>
+            <li><a class="under-cat" [ngClass]="{active: sort == '-releaseDate'}" (click)="sortBy('-releaseDate')">Release Date</a></li>
+          </ul>
+        </div>
+        <div class="collapse navbar-collapse movies-cat">
+          <div class="panel-heading">Genre</div>
+          <ul class="nav nav-stacked">
+            <li><a class="under-cat" [ngClass]="{active: selectedCategory == ''}" (click)="sortCategoryBy('')">All</a></li>
+            <li><a class="under-cat" *ngFor="let cat of listCategory" [ngClass]="{active: selectedCategory == cat.name}" (click)="sortCategoryBy(cat.name)">{{cat.name}}</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+ 
+    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+
+     <p class="pull-right visible-xs">
+      <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <div class="jumbotron">
+      <p>Search for a movie by name </p>
+      <form>
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="titleSearch" placeholder="Search for movies..."  name="searchStr" >
+            <span class="input-group-btn">
+              <button class="btn btn-color" type="button">Go!</button>
+            </span>
+          </div>
+          <!-- /input-group -->
+        </div>
+      </form>
+    </div>
+
+<div class="text-row">
+  <h3 class="orange-text" *ngIf="sort == '-rate'">Top Rated Movies</h3>
+  <h3 class="orange-text" *ngIf="sort == '-releaseDate'">Recently Released Movies</h3>
+  <h3 class="orange-text" *ngIf="sort == '-duration'">Longuest Duration Movies</h3>
+
+<!!start  template add 1 !>
+
+
+  <template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Add Movie</h4>
+      <button type="button btn-danger" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+    <div class="modal-body">
+
+      <form  novalidate #f="ngForm"  (ngSubmit)="f.valid && onSubmit(f.value)">
+
+
+
+        <div class="form-group">
+          <label for="title" >Title</label>
+          <input type="text" class="form-control"
+          id="title" #title="ngModel" name="title"  required  maxlength="10" [(ngModel)]="movie.title" />
+        </div>
+
+        <div style="color:red" 
+        *ngIf="title.errors && (title.dirty || title.touched || f.submitted)">
+        
+        <p *ngIf="title.errors.required">
+          The title is required
+        </p>
+         
+      </div>
+      <div class="form-group">
+        <label for="Duration">Duration</label>
+        <input type="number" class="form-control"
+        id="duration" #duration="ngModel"   name="duration" required [(ngModel)]="movie.duration" />
+      </div>
+      <div style="color:red" 
+      *ngIf="duration.errors && (duration.dirty || duration.touched || f.submitted)">
+
+      <p *ngIf="duration.errors.required">
+        The duration is required
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label for="rate">Rate</label>
+      <input type="number" class="form-control"
+      id="rate"  #rate="ngModel"  name="rate" required 
+  pattern="[0-5]*"
+   minlength="1"
+   maxlength="2" 
+       [(ngModel)]="movie.rate"/>
+    </div>
+
+    <div style="color:red" 
+    *ngIf="rate.errors && (rate.dirty || rate.touched || f.submitted)">
+
+    <p *ngIf="rate.errors.required">
+      The rate is required
+    </p>
+     <p *ngIf="rate.errors.maxlength">
+ rate should be 1 or 2 digit
+    </p>
+     <p *ngIf="rate.errors.pattern">
+     rate  should be one number from 0 to 5
+    </p>
+  </div>
+
+ 
+  
+
+
+
+  <div class="form-group">
+    <label for="director"> Director</label>
+    <input type="string" class="form-control"
+    id="director" #director="ngModel"  name="director" maxlength="25" required  [(ngModel)]="movie.director"/>
+  </div>
+
+  <div style="color:red" 
+  *ngIf="director.errors && (director.dirty || director.touched || f.submitted)">
+
+  <p *ngIf="director.errors.required">
+    The director is required
+  </p>
+</div>
+
+
+  <div class="form-group">
+    <label for="releaseDate"> releaseDate</label>
+    <input type="Date" class="form-control"
+    id="releaseDate" #releaseDate="ngModel"  name="releaseDate" required  [(ngModel)]="movie.releaseDate"/>
+  </div>
+    
+     <div style="color:red" 
+  *ngIf="releaseDate.errors && (releaseDate.dirty || releaseDate.touched || f.submitted)">
+
+  <p *ngIf="releaseDate.errors.required">
+    The releaseDate is required
+  </p>
+</div>
+
+
+
+
+<div class="form-group">
+  <label for="imgSource"> Image Source</label>
+  <input type="string" class="form-control"
+  id="imgSource" #imgSource="ngModel" name="imgSource" placeholder="pleas  tape any image link  "  [(ngModel)]="movie.imgSource"/>
+</div>
+
+
+<div class="form-group">
+  <label for="category"> category</label>
+<select   id="category" #category="ngModel" name="category" [(ngModel)]="movie.category" class="form-control" required>
+  <option *ngFor="let cat of listCategory" [ngValue]="cat">{{cat.name}}</option>
+</select>
+
+</div>
+
+
+
+<button type="submit"   class="btn btn-primary" > Submit  </button>
+
+</form>
+
+
+</div>
+</template>
+
+<!!start  template 2 !>
+
+
+<template #template2>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">update Movie</h4>
+      <button type="button btn-danger" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+    <div class="modal-body">
+
+      <form  novalidate #f="ngForm"  (ngSubmit)="f.valid && UpdateMovie(f.value)">
+
+
+
+        <div class="form-group">
+          <label for="title" >Title</label>
+          <input type="text" class="form-control"
+          id="title" #title="ngModel" name="title"  required  maxlength="50" [(ngModel)]="movie.title" />
+        </div>
+
+        <div style="color:red" 
+        *ngIf="title.errors && (title.dirty || title.touched || f.submitted)">
+        
+        <p *ngIf="title.errors.required">
+          The title is required
+        </p>
+         
+      </div>
+      <div class="form-group">
+        <label for="Duration">Duration</label>
+        <input type="number" class="form-control"
+        id="duration" #duration="ngModel"   name="duration" required [(ngModel)]="movie.duration" />
+      </div>
+      <div style="color:red" 
+      *ngIf="duration.errors && (duration.dirty || duration.touched || f.submitted)">
+
+      <p *ngIf="duration.errors.required">
+        The duration is required
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label for="rate">Rate</label>
+      <input type="number" class="form-control"
+      id="rate"  #rate="ngModel"  name="rate" required 
+  pattern="[0-5]*"
+   minlength="1"
+   maxlength="2" 
+       [(ngModel)]="movie.rate"/>
+    </div>
+
+    <div style="color:red" 
+    *ngIf="rate.errors && (rate.dirty || rate.touched || f.submitted)">
+
+    <p *ngIf="rate.errors.required">
+      The rate is required
+    </p>
+     <p *ngIf="rate.errors.maxlength">
+ rate should be 1 or 2 digit
+    </p>
+     <p *ngIf="rate.errors.pattern">
+     rate  should be one number from 0 to 5
+    </p>
+  </div>
+
+ 
+  
+
+
+
+  <div class="form-group">
+    <label for="director"> Director</label>
+    <input type="string" class="form-control"
+    id="director" #director="ngModel"  name="director" maxlength="25" required  [(ngModel)]="movie.director"/>
+  </div>
+
+  <div style="color:red" 
+  *ngIf="director.errors && (director.dirty || director.touched || f.submitted)">
+
+  <p *ngIf="director.errors.required">
+    The director is required
+  </p>
+</div>
+
+
+  <div class="form-group">
+    <label for="releaseDate"> releaseDate</label>
+    <input type="Date" class="form-control"
+    id="releaseDate" #releaseDate="ngModel"  name="releaseDate" required  [(ngModel)]="movie.releaseDate"/>
+  </div>
+    
+     <div style="color:red" 
+  *ngIf="releaseDate.errors && (releaseDate.dirty || releaseDate.touched || f.submitted)">
+
+  <p *ngIf="releaseDate.errors.required">
+    The releaseDate is required
+  </p>
+</div>
+
+
+
+
+<div class="form-group">
+  <label for="imgSource"> Image Source</label>
+  <input type="string" class="form-control"
+  id="imgSource" #imgSource="ngModel" name="imgSource" placeholder="pleas  tape any image link  " required [(ngModel)]="movie.imgSource"/>
+</div>
+ <div style="color:red" 
+  *ngIf="imgSource.errors && (imgSource.dirty || imgSource.touched || f.submitted)">
+
+  <p *ngIf="imgSource.errors.required">
+    The Image source is required
+  </p>
+</div>
+
+<div class="form-group">
+  <label for="category"> category</label>
+<select   id="category" #category="ngModel" name="category" [(ngModel)]="movie.category" class="form-control" required>
+  <option *ngFor="let cat of listCategory" [ngValue]="cat">{{cat.name}}</option>
+</select>
+
+</div>
+
+
+
+<button type="submit"   class="btn btn-primary" > Submit  </button>
+
+</form>
+
+
+</div>
+</template>
+
+
+<!!endOF  template 2 !>
+
+
+<button class="mdl-button text-btn mdl-js-button mdl-button--fab mdl-button--colored" (click)="openModal(template)" >
+  <i class="material-icons">add</i>
+</button>
+
+</div>
+<div class="row is-flex">
+  <div class="col-sm-6 col-md-4 col-lg-3 col-xs-6" *ngFor="let movie of Movies  | filtre : {title : titleSearch}| filtre : {category : selectedCategory}| orderBy :[sort];let i= index">
+
+
+<div>
+    <a href="#" (click)="deleteMovie(i)" style="float: right;padding-right: 30px;">    
+          <span class="glyphicon glyphicon-remove"></span>    
+        </a>    
+        <a href="#"  (click)="openModal2(template2,movie)" style="float: right;padding-right: 10px;">    
+          <span class="glyphicon glyphicon-pencil"></span>    
+        </a>  
+</div>
+
+
+    <div class="thumbnail imgDIV">
+
+
+      <img  src={{movie.imgSource}} *ngIf="movie.imgSource">
+
+      <img src="assets/img/abstract-image.jpg" *ngIf="!movie.imgSource">
+      <div class="caption">
+        <h4 class="text-ellipsis">
+
+
+          <a  title="{{movie.title}}"><strong>{{movie.title}}</strong></a>
+        </h4>
+        <p class="text-infos"><strong>Duration: </strong>{{movie.duration}} minutes </p>
+        <p class="text-infos"><strong>Release Date: </strong>{{movie.releaseDate}}</p>
+        <p>
+
+          <small class="label label-success pull-right" *ngIf="movie.rate">
+            {{movie.rate}}
+            <i class="glyphicon glyphicon-star"></i>
+          </small>
+        </p>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+</div>
+</div>
+<hr>
+<footer>
+  <p>&copy;CopyRights to alaa eddine zammel, Inc.</p>
+</footer>
+</div>
+
